@@ -1,13 +1,14 @@
 # Youtube-Downloader
-YouTube Video Downloader
 
 YouTube Video Downloader is a simple Python application built with Tkinter and yt-dlp to download YouTube videos.
-Installation
+
+**Installation:**
+
+Clone the repository, or download and extract the zip folder.
 
 Download Python 3.0.X if you haven't already.
 
 Bash
-
     pip install -r requirements.txt
 
 Usage
