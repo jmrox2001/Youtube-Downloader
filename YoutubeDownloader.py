@@ -4,6 +4,7 @@ import webbrowser
 import pyperclip  # You need to install the pyperclip module (pip install pyperclip)
 import yt_dlp
 import os
+import threading
 
 def download_video(url, output_path, quality):
     def progress_hook(d):
@@ -71,20 +72,24 @@ def start_download():
         size_str = f"{size / (1024 ** 2):.2f} MB" if size != 'Unknown' else size
         title = info.get('title', 'Unknown')
         if messagebox.askyesno("Confirm Download", f"Title: {title}\nSize: {size_str}\nQuality: {quality}\nDo you want to download this video?"):
-            download_video(url, output_path, quality)
+            # Start download in a new thread
+            download_thread = threading.Thread(target=download_video, args=(url, output_path, quality))
+            download_thread.start()
 
 # Create the main window
 root = tk.Tk()
 root.title("YouTube Video Downloader")
-
+root.geometry("650x200")
+root.resizable(False, False)
 # URL input
 tk.Label(root, text="Video URL:").grid(row=0, column=0, padx=10, pady=10)
 url_entry = tk.Entry(root, width=50)
 url_entry.grid(row=0, column=1, padx=10, pady=10)
 
 # Open YouTube button
-open_youtube_button = tk.Button(root, text="Open YouTube", command=open_youtube)
+open_youtube_button = tk.Button(root, text="Open YouTube", bg="red", fg="white", font=("Helvetica", 10, "bold"), command=open_youtube)
 open_youtube_button.grid(row=0, column=2, padx=10, pady=10)
+
 
 # Paste URL button
 paste_url_button = tk.Button(root, text="Paste URL", command=paste_url)
@@ -96,7 +101,7 @@ output_path_var = tk.StringVar()
 output_path_entry = tk.Entry(root, textvariable=output_path_var, width=40)
 output_path_entry.grid(row=1, column=1, padx=10, pady=10)
 browse_button = tk.Button(root, text="Browse", command=browse_directory)
-browse_button.grid(row=1, column=2, padx=10, pady=10)
+browse_button.grid(row=1, column=2, columnspan=2, padx=10, pady=10, ipadx=25, ipady=6)
 
 # Quality selection
 tk.Label(root, text="Video Quality:").grid(row=2, column=0, padx=10, pady=10)
@@ -113,8 +118,8 @@ quality_menu.grid(row=2, column=1, padx=10, pady=10)
 quality_var.set('best (Highest quality available)')  # Default value
 
 # Download button
-download_button = tk.Button(root, text="Download", command=start_download)
-download_button.grid(row=3, column=0, columnspan=4, pady=10)
+download_button = tk.Button(root, text="Download", bg="green", fg="black",font=("Helvetica", 14, "bold"), command=start_download)
+download_button.grid(row=2, column=2, columnspan=4, pady=10, ipadx=25, ipady=20)
 
 # Progress label
 progress_label = tk.Label(root, text="")
