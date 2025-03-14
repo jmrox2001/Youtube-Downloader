@@ -61,7 +61,6 @@ root = tk.Tk()
 root.title("YouTube Downloader")
 root.geometry("550x250")
 root.resizable(False, False)
-root.iconbitmap("youtube_22742.ico")
 
 # Use ttk for better styling
 style = ttk.Style()
